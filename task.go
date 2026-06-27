@@ -32,3 +32,20 @@ func Add(task string) string {
 	}
 	return fmt.Sprintf("Task added successfully (ID: %d)", taskID)
 }
+
+func listTasks(statusFilter string) {
+	tasks := Load()
+	if len(tasks) == 0 {
+		fmt.Println("No tasks found.")
+	}
+	foundTask := false
+	for _, task := range tasks {
+		if task.Status == statusFilter || statusFilter == "" {
+			fmt.Printf("[ID: %d] %s - Status: %s\n", task.ID, task.Description, task.Status)
+			foundTask = true
+		}
+	}
+	if !foundTask {
+		fmt.Printf("No tasks found with filter %s", statusFilter)
+	}
+}
