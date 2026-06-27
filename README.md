@@ -9,6 +9,7 @@ A simple command-line task tracker written in Go. It lets you add, update, delet
 - [Task Manager](https://en.wikipedia.org/wiki/Task_management)
 - [JSON](https://www.json.org/json-en.html)
 - [Terminal App](https://en.wikipedia.org/wiki/Terminal_emulator)
+-[Roadmap.sh project description] (https://roadmap.sh/projects/task-tracker)
 
 ## Features
 
