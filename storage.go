@@ -7,17 +7,27 @@ import (
 	"os"
 )
 
+func getStorageFilePath() string {
+	if path := os.Getenv("TASK_TRACKER_FILE"); path != "" {
+		return path
+	}
+	return "tasks.json"
+}
+
 func Load() []Task {
-	filename := "tasks.json"
+	filename := getStorageFilePath()
 	if _, err := os.Stat(filename); errors.Is(err, os.ErrNotExist) {
-		_, err := os.Create(filename)
+		file, err := os.Create(filename)
 		if err != nil {
 			fmt.Println(err)
 			return nil
 		}
+		if err := file.Close(); err != nil {
+			fmt.Println(err)
+		}
 		return []Task{}
 	}
-	content, err := os.ReadFile("tasks.json")
+	content, err := os.ReadFile(filename)
 	if err != nil {
 		fmt.Println("Error reading file: ", err)
 		return nil
@@ -35,11 +45,12 @@ func Load() []Task {
 }
 
 func Save(task []Task) error {
+	filename := getStorageFilePath()
 	jsonBytes, err := json.MarshalIndent(task, "", "    ")
 	if err != nil {
 		return err
 	}
-	err = os.WriteFile("tasks.json", jsonBytes, 0o644)
+	err = os.WriteFile(filename, jsonBytes, 0o644)
 	if err != nil {
 		fmt.Println("Error: ", err)
 		return err
