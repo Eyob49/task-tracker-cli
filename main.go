@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"strings"
 )
 
 func main() {
@@ -15,7 +16,13 @@ func main() {
 
 	switch args[1] {
 	case "add":
-		fmt.Println("you called the ADD command")
+		if len(os.Args) < 3 {
+			fmt.Println("Error: Please provide a task")
+			os.Exit(1)
+		}
+		description := strings.Join(args[2:], " ")
+		result := Add(description)
+		fmt.Println(result)
 	case "update":
 		fmt.Println("you called the UPDATE command")
 	case "delete":

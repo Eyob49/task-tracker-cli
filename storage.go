@@ -35,7 +35,7 @@ func Load() []Task {
 }
 
 func Save(task []Task) error {
-	jsonBytes, err := json.Marshal(task)
+	jsonBytes, err := json.MarshalIndent(task, "", "    ")
 	if err != nil {
 		return err
 	}

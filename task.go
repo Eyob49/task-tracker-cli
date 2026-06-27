@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"time"
 )
 
@@ -12,12 +13,22 @@ type Task struct {
 	UpdatedAt   time.Time `json:"updatedAt"`
 }
 
-func add(newTask string) string {
+func Add(task string) string {
 	tasks := Load()
-	taskID := 0
-	if len(tasks) == 0 {
-		taskID = 1
-	} else {
+	taskID := 1
+	if len(tasks) > 0 {
 		taskID = tasks[len(tasks)-1].ID + 1
 	}
+	newTask := Task{
+		ID:          taskID,
+		Description: task,
+		Status:      "todo",
+		CreatedAt:   time.Now(),
+		UpdatedAt:   time.Now(),
+	}
+	tasks = append(tasks, newTask)
+	if err := Save(tasks); err != nil {
+		return fmt.Sprintf("Failed to add task: %v", err)
+	}
+	return fmt.Sprintf("Task added successfully (ID: %d)", taskID)
 }
